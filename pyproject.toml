@@ -17,4 +17,5 @@ dependencies = [
     "requests",
     "sentence-transformers",
     "streamlit",
+    "torchvision>=0.28.0",
 ]
