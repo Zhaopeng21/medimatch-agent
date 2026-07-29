@@ -1,1 +1,1 @@
-"""Prompt template package."""
+"""Prompt package."""

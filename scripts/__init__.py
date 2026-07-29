@@ -1,1 +1,1 @@
-"""Project script package."""
+"""Project scripts package."""

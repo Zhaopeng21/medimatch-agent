@@ -1,1 +1,1 @@
-"""Application package."""
+"""MediMatch application package."""

@@ -1,1 +1,1 @@
-"""Data and domain model package."""
+"""Application models package."""

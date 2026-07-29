@@ -1,1 +1,1 @@
-"""Agent tool integrations package."""
+"""Agent tools package."""

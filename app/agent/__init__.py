@@ -1,1 +1,1 @@
-"""Agent orchestration package."""
+"""LangGraph agent package."""

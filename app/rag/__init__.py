@@ -1,1 +1,1 @@
-"""Retrieval-augmented generation package."""
+"""RAG package."""
