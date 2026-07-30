@@ -2,6 +2,7 @@ import streamlit as st
 from langchain_core.messages import AIMessage, HumanMessage
 
 from app.agent.workflow import app
+from app.models.schemas import PatientContext
 
 
 st.set_page_config(page_title="MediMatch AGI", page_icon="🩺", layout="wide")
@@ -25,62 +26,156 @@ st.markdown("""
 
 
 def get_status_html(status_code: str) -> str:
-    if status_code == "INQUIRING": return "<div class='status-card status-inquiring'>🔎 <span><strong>Triage:</strong> Gathering Info...</span></div>"
-    elif status_code == "MINOR": return "<div class='status-card status-minor'>💝 <span><strong>Triage:</strong> Minor (Self-Care)</span></div>"
-    elif status_code == "MODERATE": return "<div class='status-card status-moderate'>🔚 <span><strong>Triage:</strong> Moderate (GP Advised)</span></div>"
-    elif status_code == "URGENT": return "<div class='status-card status-urgent'>🔶 <span><strong>Triage:</strong> URGENT (ER / 111)</span></div>"
-    else: return "<div class='status-card status-standby'>⚕️<span><strong>System:</strong> Standby</span></div>"
+    if status_code == "INQUIRING":
+        return "<div class='status-card status-inquiring'>🔎 <span><strong>Triage:</strong> Gathering Info...</span></div>"
+    elif status_code == "MINOR":
+        return "<div class='status-card status-minor'>💝 <span><strong>Triage:</strong> Minor (Self-Care)</span></div>"
+    elif status_code == "MODERATE":
+        return "<div class='status-card status-moderate'>🔚 <span><strong>Triage:</strong> Moderate (GP Advised)</span></div>"
+    elif status_code == "URGENT":
+        return "<div class='status-card status-urgent'>🔶 <span><strong>Triage:</strong> URGENT (ER / 111)</span></div>"
+    else:
+        return "<div class='status-card status-standby'>⚕️<span><strong>System:</strong> Standby</span></div>"
 
+
+# ===========================
+# Session Initialization
+# ===========================
+
+if "messages" not in st.session_state:
+    st.session_state.messages = [
+        AIMessage(
+            content="Kia ora! I am your intelligent triage assistant. Please describe your symptoms or tell me what medical assistance you need today."
+        )
+    ]
+
+if "current_status" not in st.session_state:
+    st.session_state.current_status = "STANDBY"
+
+if "patient_context" not in st.session_state:
+    st.session_state.patient_context = PatientContext()
+
+
+# ===========================
+# Sidebar
+# ===========================
 
 with st.sidebar:
+
     st.markdown("### 🩺 MediMatch Engine")
     st.caption("Auckland Node | Powered by LangGraph")
+
     st.markdown("<br>", unsafe_allow_html=True)
 
     st.markdown("##### Live Triage State")
-    if "current_status" not in st.session_state: st.session_state.current_status = "STANDBY"
+
     status_placeholder = st.empty()
-    status_placeholder.markdown(get_status_html(st.session_state.current_status), unsafe_allow_html=True)
+
+    status_placeholder.markdown(
+        get_status_html(st.session_state.current_status),
+        unsafe_allow_html=True,
+    )
 
     st.markdown("<br><br>", unsafe_allow_html=True)
     st.markdown("---")
+
     st.markdown("##### ⚙️ System Parameters")
     st.caption("• Core Model: Llama-3.3-70b-versatile")
     st.caption("• Knowledge Base: Local FAISS Index")
     st.caption("• Location Context: Auckland, NZ")
 
     st.markdown("<br>", unsafe_allow_html=True)
+
     if st.button("🔄 Reset Conversation", use_container_width=True):
-        st.session_state.messages = [AIMessage(content="Kia ora! I am your intelligent triage assistant. Please describe your symptoms or tell me what medical assistance you need today.")]
+        st.session_state.messages = [
+            AIMessage(
+                content="Kia ora! I am your intelligent triage assistant. Please describe your symptoms or tell me what medical assistance you need today."
+            )
+        ]
         st.session_state.current_status = "STANDBY"
+        st.session_state.patient_context = PatientContext()
         st.rerun()
 
-st.markdown('<div class="hero-title">MediMatch Pro Assistant</div>', unsafe_allow_html=True)
-st.markdown('<div class="hero-subtitle">Intelligent triage and local healthcare routing for Auckland, NZ.</div>', unsafe_allow_html=True)
+    # ===== Debug Memory =====
+    st.markdown("---")
+    st.markdown("### 🧠 Conversation Memory")
+    st.json(st.session_state.patient_context.model_dump())
 
-if "messages" not in st.session_state:
-    st.session_state.messages = [AIMessage(content="Kia ora! I am your intelligent triage assistant. Please describe your symptoms or tell me what medical assistance you need today.")]
+
+# ===========================
+# Main Page
+# ===========================
+
+st.markdown(
+    '<div class="hero-title">MediMatch Pro Assistant</div>',
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    '<div class="hero-subtitle">Intelligent triage and local healthcare routing for Auckland, NZ.</div>',
+    unsafe_allow_html=True,
+)
+
+
+# ===========================
+# Chat History
+# ===========================
 
 for msg in st.session_state.messages:
+
     avatar = "🩺" if isinstance(msg, AIMessage) else "👤"
+
     role = "assistant" if isinstance(msg, AIMessage) else "user"
+
     st.chat_message(role, avatar=avatar).write(msg.content)
+
+
+# ===========================
+# Chat Input
+# ===========================
 
 user_input = st.chat_input("E.g., I have a severe headache...")
 
+
 if user_input:
-    st.session_state.messages.append(HumanMessage(content=user_input))
-    st.chat_message("user", avatar="👤").write(user_input)
+
+    st.session_state.messages.append(
+        HumanMessage(content=user_input)
+    )
+
+    st.chat_message(
+        "user",
+        avatar="👤",
+    ).write(user_input)
 
     with st.chat_message("assistant", avatar="🩺"):
+
         with st.spinner("Analyzing presentation..."):
-            final_state = app.invoke({"messages": st.session_state.messages})
-            ai_reply = final_state["messages"][-1].content
+
+            final_state = app.invoke(
+                {
+                    "messages": st.session_state.messages,
+                    "patient_context": st.session_state.patient_context,
+                }
+            )
+
+            # Save updated memory
+            if "patient_context" in final_state:
+                st.session_state.patient_context = final_state["patient_context"]
+
             decision = final_state.get("decision")
 
             if decision:
                 st.session_state.current_status = decision.status
-                status_placeholder.markdown(get_status_html(decision.status), unsafe_allow_html=True)
+                status_placeholder.markdown(
+                    get_status_html(decision.status),
+                    unsafe_allow_html=True,
+                )
+
+            ai_reply = final_state["messages"][-1].content
 
             st.write(ai_reply)
-            st.session_state.messages.append(AIMessage(content=ai_reply))
+
+            st.session_state.messages.append(
+                AIMessage(content=ai_reply)
+            )

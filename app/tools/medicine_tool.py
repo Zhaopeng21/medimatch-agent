@@ -8,23 +8,21 @@ from app.rag.vector_store import vector_db
 
 
 @tool
-def get_medicine_link(symptom: str) -> str:
+def get_medicine_link(case_summary: str) -> str:
     """Recommend medicine for minor symptoms."""
     try:
-        keyword_prompt = f"Extract 1-3 core medical symptom keywords from this user message for database searching. Message: '{symptom}'. Output ONLY keywords separated by spaces."
-        search_keywords = llm.invoke(keyword_prompt).content.strip()
-
         retrieved_context = ""
         if vector_db:
-            docs = vector_db.similarity_search(search_keywords, k=2)
+            docs = vector_db.similarity_search(case_summary, k=2)
             retrieved_context = "\n".join([doc.page_content for doc in docs])
 
         rag_prompt = (
             f"CONTEXT FROM INDIAN MEDICAL DATABASE:\n{retrieved_context}\n\n"
-            f"PATIENT PRESENTATION: {symptom}\n\n"
+            f"STRUCTURED PATIENT SUMMARY:\n{case_summary}\n\n"
             f"YOUR TASK:\n"
             f"You are an expert clinical pharmacist cross-licensed in both India and New Zealand.\n"
-            f"Analyze the patient's symptom using the provided database context, extract the clinical solution, and safely map it to the New Zealand OTC market.\n\n"
+            f"Use the structured patient summary as the patient presentation. Use its symptom, duration, and severity for your recommendation. Ignore conversational wording and do not extract symptoms from a user message.\n"
+            f"Analyze the structured summary using the provided database context, extract the clinical solution, and safely map it to the New Zealand OTC market.\n\n"
             f"AGI TWO-STAGE REASONING PIPELINE:\n"
             f"1. CLINICAL EXTRACTION (Based on Database): Identify the standard medical treatment, core ACTIVE INGREDIENT (generic chemical name).\n"
             f"2. NZ LOCALIZATION MAPPING: Map that active ingredient to a mainstream commercial brand currently sitting on shelves in New Zealand pharmacies (like Chemist Warehouse NZ).\n\n"

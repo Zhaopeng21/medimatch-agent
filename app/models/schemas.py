@@ -27,9 +27,26 @@ class TriageDecision(BaseModel):
             "- 'URGENT': Select this if there are red-flag fatal symptoms."
         )
     )
-    reply_or_reason: str = Field(description="Follow-up questions if INQUIRING.")
+    reply_or_reason: str = Field(
+        description="Follow-up questions if INQUIRING."
+    )
+
+
+# ===========================
+# Structured Conversation Memory
+# ===========================
+class PatientContext(BaseModel):
+    primary_symptom: Optional[str] = None
+    duration: Optional[str] = None
+    severity: Optional[str] = None
+    location: Optional[str] = None
+    red_flags: list[str] = Field(default_factory=list)
 
 
 class PatientState(TypedDict):
     messages: Annotated[Sequence[BaseMessage], operator.add]
+
     decision: Optional[TriageDecision]
+
+    # Structured short-term memory
+    patient_context: PatientContext
