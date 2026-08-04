@@ -32,6 +32,21 @@ class TriageDecision(BaseModel):
     )
 
 
+class ToolRoute(BaseModel):
+    """The non-emergency user intent selected after clinical triage."""
+
+    intent: Literal[
+        "SYMPTOM_TRIAGE",
+        "MEDICINE_INFO",
+        "FIND_GP",
+        "FIND_URGENT_CARE",
+        "GENERAL_MEDICAL",
+    ] = Field(description="The tool-routing intent for the current user message.")
+    reason: str = Field(
+        description="A brief explanation grounded in the current message and patient context."
+    )
+
+
 # ===========================
 # Structured Conversation Memory
 # ===========================
@@ -47,6 +62,9 @@ class PatientState(TypedDict):
     messages: Annotated[Sequence[BaseMessage], operator.add]
 
     decision: Optional[TriageDecision]
+
+    # Tool intent selected only after the urgent-triage safety gate.
+    tool_route: Optional[ToolRoute]
 
     # Structured short-term memory
     patient_context: PatientContext
