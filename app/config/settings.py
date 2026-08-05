@@ -7,4 +7,4 @@ from langchain_groq import ChatGroq
 load_dotenv()
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0)
+llm = ChatGroq(model="openai/gpt-oss-120b", temperature=0)

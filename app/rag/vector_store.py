@@ -6,7 +6,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-VECTOR_STORE_PATH = PROJECT_ROOT / "data" / "faiss_index"
+VECTOR_STORE_PATH = PROJECT_ROOT / "data" / "nz_medicine_faiss"
 
 
 @st.cache_resource

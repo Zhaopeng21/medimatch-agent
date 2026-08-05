@@ -78,9 +78,7 @@ Known patient information:
         ]
     )
 
-    return {
-        "decision": decision
-    }
+    return {"decision": decision}
 
 
 def tool_router_node(state: PatientState):

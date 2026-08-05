@@ -1,99 +1,100 @@
 import unittest
 from unittest.mock import patch
 
-from langchain_core.messages import AIMessage
-
-from app.prompts.tool_router_prompt import TOOL_ROUTER_PROMPT
-from app.tools.medicine_tool import (
-    GENERAL_MEDICINE_DISCLAIMER,
-    SAFETY_FALLBACK,
-    get_medicine_information,
-    has_complete_minor_context,
-    has_red_flags,
-)
+from app.models.schemas import MedicineRecommendation
+from app.rag.medicine_retriever import MedicineCandidate
+from app.tools.medicine_presenter import GENERAL_MEDICINE_DISCLAIMER, build_pharmacy_link
+from app.tools.medicine_tool import SAFETY_FALLBACK, get_medicine_link
 
 
 COMPLETE_CONTEXT = (
-    "Primary symptom: sore throat\nDuration: 2 days\nSeverity: mild\n"
+    "Primary symptom: mild headache\nDuration: 2 days\nSeverity: mild\n"
     "Location: Auckland\nRed flags: none"
+)
+HEADACHE_CANDIDATE = MedicineCandidate(
+    medicine_name="Paracetamol",
+    treats="Pain relief | Treatment of Headache",
+    composition="Paracetamol",
+    side_effects="Read the NZ product label and ask a pharmacist if unsure.",
+)
+MIGRAINE_CANDIDATE = MedicineCandidate(
+    medicine_name="Rizora 10 Tablet",
+    treats="Acute migraine headache",
+    composition="Rizatriptan (10mg)",
+    side_effects="Dizziness",
 )
 
 
+def recommendation(source="Paracetamol", ingredient="Paracetamol"):
+    return MedicineRecommendation(
+        recommendation_status="RECOMMENDED",
+        source_medicine_name=source,
+        generic_ingredient=ingredient,
+        short_reason="Listed for treatment of headache.",
+        key_caution="Read the product label and ask a pharmacist if unsure.",
+        pharmacy_search_query=ingredient,
+    )
+
+
 class MedicineToolTests(unittest.TestCase):
-    def test_complete_minor_context_is_required_for_recommendation(self):
-        self.assertTrue(has_complete_minor_context(COMPLETE_CONTEXT))
-        self.assertFalse(has_complete_minor_context("Primary symptom: unknown\nDuration: unknown"))
+    @patch("app.tools.medicine_tool.llm")
+    @patch("app.tools.medicine_tool.retrieve_medicine_candidates", return_value=[HEADACHE_CANDIDATE])
+    def test_headache_displays_verified_generic_ingredient_and_link(self, mock_retrieve, mock_llm):
+        mock_llm.with_structured_output.return_value.invoke.return_value = recommendation()
 
-    def test_recorded_red_flags_block_recommendation(self):
-        self.assertTrue(has_red_flags(COMPLETE_CONTEXT.replace("Red flags: none", "Red flags: chest pain")))
+        answer = get_medicine_link.invoke(COMPLETE_CONTEXT)
 
-    @patch("app.tools.medicine_tool.retrieve_medicine_context")
-    def test_known_medicine_side_effect_question_uses_retrieved_context(self, mock_retrieve):
-        mock_retrieve.return_value = "Medicine: Panadol. Treats: pain. Side effects: nausea."
-        with patch("app.tools.medicine_tool.llm") as mock_llm:
-            mock_llm.invoke.return_value = AIMessage(content="Nausea may occur.")
-            answer = get_medicine_information.invoke(
-                {
-                    "user_question": "What side effects can Panadol have?",
-                    "case_summary": COMPLETE_CONTEXT,
-                    "triage_status": "INQUIRING",
-                }
-            )
-
-        self.assertIn("Nausea may occur.", answer)
+        mock_retrieve.assert_called_once_with("Medicine for mild headache")
+        self.assertIn("**Medicine:** Paracetamol", answer)
+        self.assertIn("Search at Chemist Warehouse NZ", answer)
+        self.assertIn("searchtext=Paracetamol", answer)
+        self.assertNotIn("Rizora", answer)
         self.assertIn(GENERAL_MEDICINE_DISCLAIMER, answer)
 
-    @patch("app.tools.medicine_tool.retrieve_medicine_context")
-    def test_known_medicine_precautions_question_uses_retrieved_context(self, mock_retrieve):
-        mock_retrieve.return_value = "Medicine: Ibuprofen. Treats: pain. Side effects: stomach upset."
-        with patch("app.tools.medicine_tool.llm") as mock_llm:
-            mock_llm.invoke.return_value = AIMessage(content="Check the label.")
-            answer = get_medicine_information.invoke(
-                {
-                    "user_question": "What precautions apply to Ibuprofen?",
-                    "case_summary": COMPLETE_CONTEXT,
-                    "triage_status": "INQUIRING",
-                }
-            )
-
-        self.assertIn("Check the label.", answer)
-
-    def test_recommendation_question_with_missing_context_asks_follow_up(self):
-        answer = get_medicine_information.invoke(
-            {
-                "user_question": "What medicine can I take?",
-                "case_summary": "Primary symptom: unknown\nDuration: unknown\nSeverity: unknown",
-                "triage_status": "INQUIRING",
-            }
+    @patch("app.tools.medicine_tool.llm")
+    @patch("app.tools.medicine_tool.retrieve_medicine_candidates", return_value=[HEADACHE_CANDIDATE])
+    def test_ingredient_outside_selected_composition_falls_back(self, _retrieve, mock_llm):
+        mock_llm.with_structured_output.return_value.invoke.return_value = recommendation(
+            ingredient="Ibuprofen"
         )
 
-        self.assertIn("please tell me the main symptom", answer.lower())
-
-    def test_antibiotic_question_is_not_recommended(self):
-        answer = get_medicine_information.invoke(
-            {
-                "user_question": "Can you recommend Augmentin?",
-                "case_summary": COMPLETE_CONTEXT,
-                "triage_status": "MINOR",
-            }
-        )
+        answer = get_medicine_link.invoke(COMPLETE_CONTEXT)
 
         self.assertIn(SAFETY_FALLBACK, answer)
+        self.assertNotIn("chemistwarehouse.co.nz", answer)
 
-    @patch("app.tools.medicine_tool.retrieve_medicine_context", return_value="")
-    def test_unknown_medicine_returns_safe_fallback(self, _mock_retrieve):
-        answer = get_medicine_information.invoke(
-            {
-                "user_question": "What are the side effects of madeupmed?",
-                "case_summary": COMPLETE_CONTEXT,
-                "triage_status": "INQUIRING",
-            }
-        )
+    @patch("app.tools.medicine_tool.llm")
+    @patch("app.tools.medicine_tool.retrieve_medicine_candidates", return_value=[MIGRAINE_CANDIDATE])
+    def test_mild_headache_cannot_select_migraine_only_candidate(self, mock_retrieve, mock_llm):
+        answer = get_medicine_link.invoke(COMPLETE_CONTEXT)
 
+        mock_llm.with_structured_output.assert_not_called()
+        mock_retrieve.assert_called_once()
         self.assertIn(SAFETY_FALLBACK, answer)
 
-    def test_router_prompt_routes_symptom_medicine_request_to_medicine_info(self):
-        self.assertIn("asking what medicine they can take", TOOL_ROUTER_PROMPT)
+    @patch("app.tools.medicine_tool.llm")
+    @patch(
+        "app.tools.medicine_tool.retrieve_medicine_candidates",
+        return_value=[MedicineCandidate("Headache Tablet", "Treatment of Headache", "", "Nausea")],
+    )
+    def test_missing_composition_falls_back(self, _retrieve, mock_llm):
+        answer = get_medicine_link.invoke(COMPLETE_CONTEXT)
+
+        mock_llm.with_structured_output.assert_not_called()
+        self.assertIn(SAFETY_FALLBACK, answer)
+
+    @patch("app.tools.medicine_tool.retrieve_medicine_candidates")
+    def test_red_flags_do_not_enter_medicine_path(self, mock_retrieve):
+        answer = get_medicine_link.invoke(COMPLETE_CONTEXT.replace("none", "chest pain"))
+
+        mock_retrieve.assert_not_called()
+        self.assertIn(SAFETY_FALLBACK, answer)
+
+    def test_pharmacy_link_is_deterministic(self):
+        self.assertEqual(
+            build_pharmacy_link("Paracetamol"),
+            "https://www.chemistwarehouse.co.nz/search?searchtext=Paracetamol",
+        )
 
 
 if __name__ == "__main__":
