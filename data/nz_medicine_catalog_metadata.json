@@ -1,0 +1,9 @@
+{
+  "catalog_name": "MediMatch NZ General Sale Medicine Catalog",
+  "record_count": 14,
+  "sources": {
+    "pharmac_schedule": "https://schedule.pharmac.govt.nz/pub/schedule/archive/Schedule_2026-08.xml",
+    "medsafe_classification": "https://www.medsafe.govt.nz/profs/class/classintro.asp"
+  },
+  "limitations": "General Sale classification can include formulation, strength, pack, or use conditions. Legacy treatment evidence is retained for retrieval only and is not an NZ clinical guideline."
+}

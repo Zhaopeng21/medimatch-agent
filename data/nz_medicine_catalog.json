@@ -1,0 +1,359 @@
+[
+  {
+    "active_ingredient": "Amorolfine",
+    "nz_search_query": "amorolfine",
+    "nz_classification": "General Sale",
+    "classification_conditions": [
+      "in preparations for the treatment of tinea pedis only or when sold in practice by a podiatrist registered with the Podiatrists Board"
+    ],
+    "pharmac_product_examples": [
+      "Amorolfine",
+      "MycoNail"
+    ],
+    "pharmac_formulations": [
+      "Nail soln 5%"
+    ],
+    "legacy_treatment_evidence": "Fungal nail infections | Treatment of Fungal infections",
+    "source_medicine_count": 28,
+    "eligibility": "general_sale_exact_nz_match",
+    "source_urls": [
+      "https://schedule.pharmac.govt.nz/pub/schedule/archive/Schedule_2026-08.xml",
+      "https://www.medsafe.govt.nz/profs/class/classintro.asp"
+    ],
+    "last_verified": "2026-08-05"
+  },
+  {
+    "active_ingredient": "Aspirin",
+    "nz_search_query": "aspirin",
+    "nz_classification": "General Sale",
+    "classification_conditions": [
+      "except when specified in the First Schedule to the Medicines Regulations 1984"
+    ],
+    "pharmac_product_examples": [
+      "Aspirin",
+      "Ethics Aspirin",
+      "Ethics Aspirin EC"
+    ],
+    "pharmac_formulations": [
+      "Tab 100 mg",
+      "Tab dispersible 300 mg"
+    ],
+    "legacy_treatment_evidence": "Heart attack | Treatment of Prevention of heart attack and stroke | Prevention of Heart attack | Prevention of heart attack and stroke | Prevention of Angina (heart-related chest pain)Treatment and prevention of Heart attackTreatment and prevention of Stroke | Blood clots | Heart attackPrevention of Stroke | Treatment and prevention of Angina (heart-related chest pain)Treatment and prevention of Heart attackTreatment and prevention of Stroke",
+    "source_medicine_count": 88,
+    "eligibility": "general_sale_exact_nz_match",
+    "source_urls": [
+      "https://schedule.pharmac.govt.nz/pub/schedule/archive/Schedule_2026-08.xml",
+      "https://www.medsafe.govt.nz/profs/class/classintro.asp"
+    ],
+    "last_verified": "2026-08-05"
+  },
+  {
+    "active_ingredient": "Clotrimazole",
+    "nz_search_query": "clotrimazole",
+    "nz_classification": "General Sale",
+    "classification_conditions": [
+      "for external use in medicines for tinea pedis only or when sold in practice by a podiatrist registered with the Podiatrists Board"
+    ],
+    "pharmac_product_examples": [
+      "Canesten",
+      "Clomazol",
+      "Clotrimazole"
+    ],
+    "pharmac_formulations": [
+      "Crm 1%",
+      "Soln 1%",
+      "Vaginal crm 1% with applicators",
+      "Vaginal crm 2% with applicators"
+    ],
+    "legacy_treatment_evidence": "Treatment of Fungal skin infections | Treatment of Skin infections | Syndromic treatment of vaginal discharge | Fungal infections of mouth (Thrush)Treatment of Fungal infections | Fungal infections of vaginaTreatment of Fungal infections | Treatment of Ear infection | Fungal infections | Treatment of Fungal infections | Treatment of Vaginitis",
+    "source_medicine_count": 75,
+    "eligibility": "general_sale_exact_nz_match",
+    "source_urls": [
+      "https://schedule.pharmac.govt.nz/pub/schedule/archive/Schedule_2026-08.xml",
+      "https://www.medsafe.govt.nz/profs/class/classintro.asp"
+    ],
+    "last_verified": "2026-08-05"
+  },
+  {
+    "active_ingredient": "Hydrogen Peroxide",
+    "nz_search_query": "hydrogen peroxide",
+    "nz_classification": "General Sale",
+    "classification_conditions": [
+      ""
+    ],
+    "pharmac_product_examples": [
+      "Crystaderm",
+      "Hydrogen peroxide"
+    ],
+    "pharmac_formulations": [
+      "Crm 1%"
+    ],
+    "legacy_treatment_evidence": "Wound infection | Mouth infection",
+    "source_medicine_count": 3,
+    "eligibility": "general_sale_exact_nz_match",
+    "source_urls": [
+      "https://schedule.pharmac.govt.nz/pub/schedule/archive/Schedule_2026-08.xml",
+      "https://www.medsafe.govt.nz/profs/class/classintro.asp"
+    ],
+    "last_verified": "2026-08-05"
+  },
+  {
+    "active_ingredient": "Ibuprofen",
+    "nz_search_query": "ibuprofen",
+    "nz_classification": "General Sale",
+    "classification_conditions": [
+      "for external use; in divided solid dosage forms for oral use containing 200 milligrams or less per dose form with a recommended daily dose of not more than 1.2 grams and when sold in the manufacturer's original pack containing not more than 25 dose units per pack"
+    ],
+    "pharmac_product_examples": [
+      "Ethics",
+      "Ibuprofen",
+      "Ibuprofen SR BNM",
+      "Relieve"
+    ],
+    "pharmac_formulations": [
+      "Oral liq 20 mg per ml",
+      "Tab 200 mg",
+      "Tab long-acting 800 mg"
+    ],
+    "legacy_treatment_evidence": "Pain reliefTreatment of Fever",
+    "source_medicine_count": 10,
+    "eligibility": "general_sale_exact_nz_match",
+    "source_urls": [
+      "https://schedule.pharmac.govt.nz/pub/schedule/archive/Schedule_2026-08.xml",
+      "https://www.medsafe.govt.nz/profs/class/classintro.asp"
+    ],
+    "last_verified": "2026-08-05"
+  },
+  {
+    "active_ingredient": "Ketoconazole",
+    "nz_search_query": "ketoconazole",
+    "nz_classification": "General Sale",
+    "classification_conditions": [
+      "for dermal use in medicines for tinea pedis only or when sold in practice by a podiatrist registered with the Podiatrists Board; in medicines for treatment of the scalp containing 1% or less"
+    ],
+    "pharmac_product_examples": [
+      "Burel",
+      "Ketoconazole",
+      "Sebizole",
+      "Strides Shasun",
+      "Taro",
+      "Teva-Ketoconazole"
+    ],
+    "pharmac_formulations": [
+      "Shampoo 2%",
+      "Tab 200 mg"
+    ],
+    "legacy_treatment_evidence": "Fungal skin infections | Treatment of Dandruff | Treatment of Fungal skin infectionsTreatment of Dandruff | Treatment of Fungal infections | Fungal infections | Treatment of Fungal skin infections | Dandruff | Treatment of Skin infections",
+    "source_medicine_count": 173,
+    "eligibility": "general_sale_exact_nz_match",
+    "source_urls": [
+      "https://schedule.pharmac.govt.nz/pub/schedule/archive/Schedule_2026-08.xml",
+      "https://www.medsafe.govt.nz/profs/class/classintro.asp"
+    ],
+    "last_verified": "2026-08-05"
+  },
+  {
+    "active_ingredient": "Loratadine",
+    "nz_search_query": "loratadine",
+    "nz_classification": "General Sale",
+    "classification_conditions": [
+      "in divided solid dosage forms for oral use containing 10 milligrams or less per dose form for the treatment of seasonal allergic rhinitis when sold in the manufacturer's original pack containing not more than 10 days' supply"
+    ],
+    "pharmac_product_examples": [
+      "Haylor syrup",
+      "Loratadine",
+      "Loratadine Noumed"
+    ],
+    "pharmac_formulations": [
+      "Oral liq 1 mg per ml",
+      "Tab 10 mg"
+    ],
+    "legacy_treatment_evidence": "Treatment of Allergic conditions | Cough | Cough with mucus",
+    "source_medicine_count": 9,
+    "eligibility": "general_sale_exact_nz_match",
+    "source_urls": [
+      "https://schedule.pharmac.govt.nz/pub/schedule/archive/Schedule_2026-08.xml",
+      "https://www.medsafe.govt.nz/profs/class/classintro.asp"
+    ],
+    "last_verified": "2026-08-05"
+  },
+  {
+    "active_ingredient": "Miconazole",
+    "nz_search_query": "miconazole",
+    "nz_classification": "General Sale",
+    "classification_conditions": [
+      "for external use in medicines for tinea pedis only or when sold in practice by a podiatrist registered with the Podiatrists Board"
+    ],
+    "pharmac_product_examples": [
+      "Decozol",
+      "Miconazole"
+    ],
+    "pharmac_formulations": [
+      "Oral gel 20 mg per g"
+    ],
+    "legacy_treatment_evidence": "Treatment of Skin infections | Treatment of Fungal skin infections | Skin infections | Dandruff | Dermatitis Fungal skin infections",
+    "source_medicine_count": 45,
+    "eligibility": "general_sale_exact_nz_match",
+    "source_urls": [
+      "https://schedule.pharmac.govt.nz/pub/schedule/archive/Schedule_2026-08.xml",
+      "https://www.medsafe.govt.nz/profs/class/classintro.asp"
+    ],
+    "last_verified": "2026-08-05"
+  },
+  {
+    "active_ingredient": "Nicotine",
+    "nz_search_query": "nicotine",
+    "nz_classification": "General Sale",
+    "classification_conditions": [
+      "in preparations for oromucosal or transdermal absorption"
+    ],
+    "pharmac_product_examples": [
+      "Habitrol",
+      "Nicotine"
+    ],
+    "pharmac_formulations": [
+      "Gum 2 mg (Fruit)",
+      "Gum 2 mg (Fruit) for direct distribution only",
+      "Gum 2 mg (Mint)",
+      "Gum 2 mg (Mint) for direct distribution only",
+      "Gum 4 mg (Fruit)",
+      "Gum 4 mg (Fruit) for direct distribution only",
+      "Gum 4 mg (Mint)",
+      "Gum 4 mg (Mint) for direct distribution only"
+    ],
+    "legacy_treatment_evidence": "Quitting smoking",
+    "source_medicine_count": 2,
+    "eligibility": "general_sale_exact_nz_match",
+    "source_urls": [
+      "https://schedule.pharmac.govt.nz/pub/schedule/archive/Schedule_2026-08.xml",
+      "https://www.medsafe.govt.nz/profs/class/classintro.asp"
+    ],
+    "last_verified": "2026-08-05"
+  },
+  {
+    "active_ingredient": "Paracetamol",
+    "nz_search_query": "paracetamol",
+    "nz_classification": "General Sale",
+    "classification_conditions": [
+      "in tablets or capsules containing 500 milligrams or less and in packs containing not more than 10 grams; in powder form in sachets containing 1 gram or less and in packs of not more than 10 grams"
+    ],
+    "pharmac_product_examples": [
+      "Gacet",
+      "Noumed",
+      "Noumed Paracetamol",
+      "Pacimol",
+      "Pamol",
+      "Paracetamol",
+      "Paracetamol (Ethics)"
+    ],
+    "pharmac_formulations": [
+      "Oral liq 120 mg per 5 ml",
+      "Oral liq 250 mg per 5 ml",
+      "Suppos 125 mg",
+      "Suppos 250 mg",
+      "Suppos 500 mg",
+      "Tab 500 mg - blister pack",
+      "Tab 500 mg - bottle pack"
+    ],
+    "legacy_treatment_evidence": "Pain relief | Pain reliefTreatment of Fever | Treatment of Common cold | Treatment of Muscular pain | Pain relief Fever | Treatment of Pain due to muscle spasm | Pain due to muscle spasm | Common cold | Treatment of Abdominal pain | Treatment of Headache",
+    "source_medicine_count": 352,
+    "eligibility": "general_sale_exact_nz_match",
+    "source_urls": [
+      "https://schedule.pharmac.govt.nz/pub/schedule/archive/Schedule_2026-08.xml",
+      "https://www.medsafe.govt.nz/profs/class/classintro.asp"
+    ],
+    "last_verified": "2026-08-05"
+  },
+  {
+    "active_ingredient": "Permethrin",
+    "nz_search_query": "permethrin",
+    "nz_classification": "General Sale",
+    "classification_conditions": [
+      "in medicines containing 5% or less"
+    ],
+    "pharmac_product_examples": [
+      "A-Scabies",
+      "Permethrin"
+    ],
+    "pharmac_formulations": [
+      "Lotn 5%"
+    ],
+    "legacy_treatment_evidence": "Scabies",
+    "source_medicine_count": 2,
+    "eligibility": "general_sale_exact_nz_match",
+    "source_urls": [
+      "https://schedule.pharmac.govt.nz/pub/schedule/archive/Schedule_2026-08.xml",
+      "https://www.medsafe.govt.nz/profs/class/classintro.asp"
+    ],
+    "last_verified": "2026-08-05"
+  },
+  {
+    "active_ingredient": "Salicylic Acid",
+    "nz_search_query": "salicylic acid",
+    "nz_classification": "General Sale",
+    "classification_conditions": [
+      "in medicines for dermal use containing 40% or less"
+    ],
+    "pharmac_product_examples": [
+      "Midwest",
+      "Salicylic acid"
+    ],
+    "pharmac_formulations": [
+      "Powder"
+    ],
+    "legacy_treatment_evidence": "Eczema Psoriasis | Treatment of EczemaTreatment of Psoriasis | Acne | Psoriasis | Treatment of Psoriasis | Treatment of Dandruff | Warts",
+    "source_medicine_count": 76,
+    "eligibility": "general_sale_exact_nz_match",
+    "source_urls": [
+      "https://schedule.pharmac.govt.nz/pub/schedule/archive/Schedule_2026-08.xml",
+      "https://www.medsafe.govt.nz/profs/class/classintro.asp"
+    ],
+    "last_verified": "2026-08-05"
+  },
+  {
+    "active_ingredient": "Sucralfate",
+    "nz_search_query": "sucralfate",
+    "nz_classification": "General Sale",
+    "classification_conditions": [
+      ""
+    ],
+    "pharmac_product_examples": [
+      "Carafate",
+      "Sucralfate"
+    ],
+    "pharmac_formulations": [
+      "Tab 1 g"
+    ],
+    "legacy_treatment_evidence": "Treatment of AcidityTreatment of HeartburnTreatment of Stomach ulcers | Treatment of Intestinal ulcersTreatment of Stomach ulcers | Bacterial skin infections | Treatment of Anal fissure | Burns | Treatment of Burns | Treatment of Piles | Treatment of Skin conditions with inflammation & itchingTreatment of Intestinal ulcersTreatment of Stomach ulcers | Wound infection",
+    "source_medicine_count": 42,
+    "eligibility": "general_sale_exact_nz_match",
+    "source_urls": [
+      "https://schedule.pharmac.govt.nz/pub/schedule/archive/Schedule_2026-08.xml",
+      "https://www.medsafe.govt.nz/profs/class/classintro.asp"
+    ],
+    "last_verified": "2026-08-05"
+  },
+  {
+    "active_ingredient": "Terbinafine",
+    "nz_search_query": "terbinafine",
+    "nz_classification": "General Sale",
+    "classification_conditions": [
+      "for dermal use in medicines for tinea pedis only or when sold in practice by a podiatrist registered with the Podiatrists Board"
+    ],
+    "pharmac_product_examples": [
+      "Deolate",
+      "Terbinafine"
+    ],
+    "pharmac_formulations": [
+      "Tab 250 mg"
+    ],
+    "legacy_treatment_evidence": "Fungal skin infections | Fungal infections | Treatment of Fungal skin infections | Treatment of Skin infections | Dermatitis Fungal skin infections",
+    "source_medicine_count": 84,
+    "eligibility": "general_sale_exact_nz_match",
+    "source_urls": [
+      "https://schedule.pharmac.govt.nz/pub/schedule/archive/Schedule_2026-08.xml",
+      "https://www.medsafe.govt.nz/profs/class/classintro.asp"
+    ],
+    "last_verified": "2026-08-05"
+  }
+]
