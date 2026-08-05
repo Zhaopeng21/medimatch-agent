@@ -12,7 +12,7 @@ from app.prompts.memory_prompt import MEMORY_PROMPT
 from app.prompts.triage_prompt import TRIAGE_PROMPT
 from app.prompts.tool_router_prompt import TOOL_ROUTER_PROMPT
 from app.tools.google_maps_tool import find_local_gp, find_urgent_care
-from app.tools.medicine_tool import get_medicine_link
+from app.tools.medicine_tool import get_medicine_information, get_medicine_link
 
 
 def build_case_summary(patient_context: PatientContext) -> str:
@@ -187,16 +187,20 @@ def urgent_care_node(state: PatientState):
 
 
 def medicine_info_node(state: PatientState):
-    """Phase-one safe fallback until medicine-information RAG is added."""
+    """Answer non-urgent medicine questions with the existing local RAG source."""
+    patient_context = state.get("patient_context", PatientContext())
+    decision = state.get("decision")
+    triage_status = decision.status if decision else "INQUIRING"
+
     return {
         "messages": [
             AIMessage(
-                content=(
-                    "I can help route medicine questions, but detailed medicine "
-                    "information is not available in this version yet. Please check "
-                    "the medicine label or ask a New Zealand pharmacist. If you have "
-                    "severe symptoms, symptoms that are worsening, or red-flag symptoms, "
-                    "seek urgent medical help or call 111."
+                content=get_medicine_information.invoke(
+                    {
+                        "user_question": state["messages"][-1].content,
+                        "case_summary": build_case_summary(patient_context),
+                        "triage_status": triage_status,
+                    }
                 )
             )
         ]
