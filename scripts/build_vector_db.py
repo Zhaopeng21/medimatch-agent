@@ -1,3 +1,5 @@
+"""Build the local FAISS medicine index from the project's existing CSV."""
+
 from pathlib import Path
 
 import pandas as pd
@@ -7,35 +9,44 @@ from langchain_huggingface import HuggingFaceEmbeddings
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DATA_PATH = PROJECT_ROOT / "data" / "Medicine_Details.csv"
-VECTOR_STORE_PATH = PROJECT_ROOT / "data" / "faiss_index"
+DATA_PATH = PROJECT_ROOT / "data" / "pipeline" / "legacy" / "Medicine_Details.csv"
+VECTOR_STORE_PATH = PROJECT_ROOT / "data" / "archive" / "legacy_faiss_index"
 
-print("1️⃣ 正在读取并清洗数据...")
-df = pd.read_csv(DATA_PATH)
 
-df = df.dropna(subset=['Medicine Name', 'Uses'])
-df['Poor Review %'] = pd.to_numeric(df['Poor Review %'], errors='coerce').fillna(0)
-df = df[df['Poor Review %'] < 50]
+def clean_value(value: object) -> str:
+    text = str(value).replace("\n", " ").strip()
+    return "" if text.lower() in {"nan", "none"} else text
 
-print("2️⃣ 正在把表格转换为精准的 AI 文档块...")
+
+print("Reading and cleaning medicine data...")
+df = pd.read_csv(DATA_PATH).dropna(subset=["Medicine Name", "Uses"])
+df["Poor Review %"] = pd.to_numeric(df["Poor Review %"], errors="coerce").fillna(0)
+df = df[df["Poor Review %"] < 50]
+
+print("Building medicine documents...")
 docs = []
-for index, row in df.iterrows():
-    drug = str(row['Medicine Name']).strip()
-    uses = str(row['Uses']).replace('\n', ' ').strip()
-    side_effects = str(row['Side_effects']).replace('\n', ' ').strip()
+for _, row in df.iterrows():
+    medicine_name = clean_value(row["Medicine Name"])
+    treats = clean_value(row["Uses"])
+    composition = clean_value(row.get("Composition", ""))
+    side_effects = clean_value(row.get("Side_effects", "")) or "Consult a pharmacist for details."
+    docs.append(
+        Document(
+            page_content=(
+                f"Medicine: {medicine_name}. Treats: {treats}. "
+                f"Composition: {composition}. Side effects: {side_effects}."
+            ),
+            metadata={
+                "medicine_name": medicine_name,
+                "treats": treats,
+                "composition": composition,
+                "side_effects": side_effects,
+            },
+        )
+    )
 
-    if side_effects.lower() in ['nan', 'none', '']:
-        side_effects = "Consult a pharmacist for details."
-
-    text = f"Medicine: {drug}. Treats: {uses}. Side effects: {side_effects}."
-    docs.append(Document(page_content=text))
-
-print(f"✅ 成功提取了 {len(docs)} 种优质药物数据！")
-
-print("3️⃣ 正在唤醒翻译官，转换并建立 FAISS 向量库...")
+print(f"Prepared {len(docs)} medicine documents.")
+print("Building FAISS vector index...")
 embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-vector_db = FAISS.from_documents(docs, embeddings)
-
-print("4️⃣ 正在保存数据库...")
-vector_db.save_local(str(VECTOR_STORE_PATH))
-print("🎉 完美版数据库建立完成！快去 Streamlit 里试试吧！")
+FAISS.from_documents(docs, embeddings).save_local(str(VECTOR_STORE_PATH))
+print("FAISS index build complete.")

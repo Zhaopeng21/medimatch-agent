@@ -1,0 +1,11 @@
+{
+  "source_row_count": 11825,
+  "unique_composition_count": 3358,
+  "candidate_ingredient_count": 1058,
+  "flagged_candidate_counts": {
+    "antibiotic_or_antimicrobial": 75,
+    "injection_or_parenteral": 217,
+    "chronic_or_specialist_condition": 196
+  },
+  "output_note": "This is an intermediate candidate table. It contains no NZ classification or approved symptom-to-ingredient recommendation."
+}
