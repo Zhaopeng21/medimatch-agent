@@ -13,3 +13,6 @@ wheels/
 
 # Virtual environment
 .venv/
+data/archive/
+.venv/
+.uv-cache/
